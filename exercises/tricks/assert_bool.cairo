@@ -18,7 +18,7 @@ end
 
 func assert_nor(x, y):
     # FILL ME
-    assert x * x = 0
+    assert x + y = 0
     return ()
 end
 
@@ -78,7 +78,19 @@ end
 func test_assert_nor_ko():
     %{ expect_revert() %}
     assert_nor(1, 1)
+    return ()
+end
+
+@external
+func test_assert_nor_ko2():
+    %{ expect_revert() %}
     assert_nor(0, 1)
+    return ()
+end
+
+@external
+func test_assert_nor_ko3():
+    %{ expect_revert() %}
     assert_nor(1, 0)
     return ()
 end
