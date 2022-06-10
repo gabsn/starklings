@@ -1,8 +1,6 @@
 %lang starknet
 from starkware.cairo.common.math_cmp import is_le
 
-# I AM NOT DONE
-
 # TODO
 # Rewrite those functions with a high level syntax
 @external
@@ -12,6 +10,7 @@ func sum_array(array_len : felt, array : felt*) -> (sum : felt):
     # [ap] = 0; ap++
     # call rec_sum_array
     # ret
+    return rec_sum_array(array_len, array, 0)
 end
 
 func rec_sum_array(array_len : felt, array : felt*, sum : felt) -> (sum : felt):
@@ -30,6 +29,13 @@ func rec_sum_array(array_len : felt, array : felt*, sum : felt) -> (sum : felt):
 
     # done:
     # ret
+    if array_len == 0:
+        return (sum)
+    end
+    
+    let first_element = array[0]
+    let (new_sum) = rec_sum_array(array_len - 1, array + 1, sum + first_element)
+    return (sum=new_sum)
 end
 
 # TODO
@@ -43,6 +49,22 @@ func max{range_check_ptr}(a : felt, b : felt) -> (max : felt):
     # else:
     #     return (a)
     # end
+    [ap] = [fp - 5]; ap++
+    [ap] = [fp - 4]; ap++
+    [ap] = [fp - 3]; ap++
+    call is_le
+    
+    # Returns new range_check_ptr
+    [ap] = [ap - 2]; ap++
+
+    jmp b_is_greater if [ap - 2] != 0
+    
+    [ap] = [fp - 4]; ap++
+    ret
+
+    b_is_greater:
+    [ap] = [fp - 3]; ap++
+    ret
 end
 
 #########
